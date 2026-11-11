@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Foulée – Running</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0C1A2B"><link rel="apple-touch-icon" href="icon-192.png"><meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF2F6;--card:#fff;--tx:#0C1A2B;--mut:#5B6B7F;--bd:#DCE3EB;--ac:#1F46E0;--onac:#fff;--hero:#0C1A2B;--sun:#FFC21F;--ok:#0A8F67;--err:#D6343A;--r1:28px;--r2:18px;--dp:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;--bd2:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#080F1B;--card:#101B2D;--tx:#EAF0FA;--mut:#93A4BB;--bd:#1E2D45;--ac:#7C97FF;--onac:#0B1626;--hero:#14274A;--ok:#34D3A0;--err:#FF6B70;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#080F1B;--card:#101B2D;--tx:#EAF0FA;--mut:#93A4BB;--bd:#1E2D45;--ac:#7C97FF;--onac:#0B1626;--hero:#14274A;--ok:#34D3A0;--err:#FF6B70;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 var(--bd2);-webkit-font-smoothing:antialiased}
+main{max-width:560px;margin:0 auto;padding:18px 16px 112px}
+h1{font:800 36px/1 var(--dp);letter-spacing:-.01em;margin:6px 0 16px}
+h1.brand{font-size:52px;margin-bottom:4px}
+h2{font:700 24px/1.1 var(--dp);margin:24px 0 10px}
+p{line-height:1.5}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:16px;margin-bottom:12px}
+.m{color:var(--mut);font-size:14px}
+label{display:block;font:600 14px/1.2 var(--bd2);color:var(--mut);margin:16px 0 6px}
+input,select,textarea{width:100%;font:500 16px var(--bd2);color:var(--tx);background:var(--card);border:1.5px solid var(--bd);border-radius:14px;padding:12px 14px;min-height:48px}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--ac)}
+input[type=checkbox]{width:auto;min-height:0}
+button{font:600 16px/1 var(--bd2);border:0;border-radius:999px;padding:14px 22px;min-height:48px;background:var(--ac);color:var(--onac);cursor:pointer;transition:opacity .15s,transform .1s}
+button:active{opacity:.8;transform:scale(.98)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+button.g{background:transparent;color:var(--tx);border:1.5px solid var(--bd);font-weight:500}
+button.g[data-a="sel"],button.g[data-a="rsel"]{border-radius:var(--r2);padding:14px 16px;line-height:1.35}
+.full{width:100%;margin-top:14px}
+.bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:var(--ac);border-radius:6px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:10px;padding:2px 16px}
+summary{padding:14px 0;font:700 21px/1.1 var(--dp);cursor:pointer;list-style:none;display:flex;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg);transition:transform .2s;margin-left:auto}
+details[open] summary::after{transform:rotate(-135deg)}
+summary span{font:500 14px var(--bd2);color:var(--mut);margin-left:8px}
+.s{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--bd)}
+.s .sb{flex:1;font-size:15px;min-width:0}.s .sb b{font:700 19px/1.1 var(--dp)}
+.s button{padding:10px 16px;font-size:15px;min-height:42px}
+.s.today{box-shadow:inset 4px 0 0 var(--sun);padding-left:14px}.s.miss{opacity:.62}
+.tag{font:600 12px/1 var(--bd2);padding:5px 9px;border-radius:999px;background:color-mix(in srgb,currentColor 14%,transparent);color:var(--mut);white-space:nowrap}
+.ok{color:var(--ok);font-weight:600;font-size:14px;white-space:nowrap}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.k{font:700 34px/1 var(--dp)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-top:1px solid var(--bd);font-size:15px}
+.hero{position:relative;overflow:hidden;background:var(--hero);color:#fff;border:0;border-radius:var(--r1);padding:22px 20px 20px}
+.hero>*{position:relative;z-index:1}
+.hero svg.trk{position:absolute;right:-70px;top:-34px;width:310px;height:auto;z-index:0}
+.hero .m{color:rgba(255,255,255,.78)}
+.when{font:700 15px var(--bd2);color:var(--sun)}
+.hl{font:800 48px/.95 var(--dp);margin-top:6px;letter-spacing:-.01em}
+.hd{font:600 16px var(--bd2);opacity:.85;margin-top:6px}
+.hx{margin-top:12px;max-width:80%}
+.chip{display:inline-block;margin-top:12px;padding:7px 14px;border-radius:999px;background:var(--sun);color:#0C1A2B;font:700 14px var(--bd2)}
+.hero button{background:var(--sun);color:#0C1A2B;font-size:17px;min-height:54px}
+.board{background:var(--hero);color:#fff;border:0;border-radius:var(--r1);text-align:center;padding:20px}
+.board .m{color:rgba(255,255,255,.7)}
+.big{font:800 92px/1 var(--dp);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.dchip{position:relative;display:flex;align-items:center;justify-content:center;margin:0;padding:11px 15px;min-width:54px;border:1.5px solid var(--bd);border-radius:999px;font:600 15px var(--bd2);color:var(--tx);background:var(--card);cursor:pointer}
+.dchip input{position:absolute;inset:0;width:100%!important;height:100%;margin:0;opacity:0;cursor:pointer}
+.dchip:has(input:checked){background:var(--ac);border-color:var(--ac);color:var(--onac)}
+.dchip:has(input:disabled){opacity:.4}
+nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:536px;margin:0 auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--bd);border-radius:28px;padding:6px;z-index:20;box-shadow:0 6px 20px rgba(12,26,43,.1)}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;color:var(--mut);border-radius:22px;padding:9px 2px 8px;min-height:56px;font:600 11px/1 var(--bd2)}
+nav button.on{color:var(--ac);background:color-mix(in srgb,var(--ac) 13%,transparent)}
+nav svg{width:22px;height:22px}
+svg{width:100%;height:auto;display:block}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom,0px));background:var(--tx);color:var(--bg);padding:11px 18px;border-radius:24px;font:600 14px var(--bd2);z-index:50;max-width:90%;text-align:center;pointer-events:none;opacity:0;transition:opacity .2s}#toast.on{opacity:1}
+.rs{display:none}
+.pic{display:block;width:100%;height:auto;color:var(--tx)}
+.c details{background:transparent;border:0;border-top:1px solid var(--bd);border-radius:0;margin:0;padding:0}.c details:first-of-type{border-top:0}
+.c details summary{font:600 17px var(--bd2);padding:14px 0}
+.exb{padding:0 0 16px}.exb ol{margin:10px 0 8px;padding-left:20px;font-size:15px}.exb li{margin:5px 0}
+@media(prefers-reduced-motion:reduce){.rn{display:none}.rs{display:inline}}
+</style></head><body>
+<main id="v"></main><div id="toast" role="status" aria-live="polite"></div>
+<nav><button data-t="plan" aria-label="Plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span>Plan</span></button><button data-t="run" aria-label="Course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z"/></svg><span>Course</span></button><button data-t="renfo" aria-label="Renfo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/></svg><span>Renfo</span></button><button data-t="log" aria-label="Saisie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="6"/><path d="M12 8v8M8 12h8"/></svg><span>Saisie</span></button><button data-t="stats" aria-label="Stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg><span>Stats</span></button></nav>
+<script>
+var $=function(s){return document.querySelector(s)};
+var S={p:null,plan:[],logs:[]};
+try{S=Object.assign(S,JSON.parse(localStorage.getItem("foulee")||"{}"))}catch(e){}
+function save(){try{S.refH=S.refH||[];var lr=S.refH[S.refH.length-1];if(S.ref&&(!lr||lr.r!=S.ref)){if(lr&&lr.d==today)lr.r=S.ref;else S.refH.push({d:today,r:S.ref});S.refH=S.refH.slice(-60)}var k="fouleeBk",prev=localStorage.getItem("foulee");if(prev){var a=JSON.parse(localStorage.getItem(k)||"[]");if(!a.some(function(x){return x.d==today})){var n=0;try{n=(JSON.parse(prev).logs||[]).length}catch(e){}a.push({d:today,n:n,j:prev});a=a.slice(-7);while(a.length>1&&JSON.stringify(a).length>3e6)a.shift();localStorage.setItem(k,JSON.stringify(a))}}localStorage.setItem("foulee",JSON.stringify(S))}catch(e){}}
+var iso=function(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+var dt=function(s){return new Date(s+"T12:00")};
+var addD=function(s,n){var d=dt(s);d.setDate(d.getDate()+n);return iso(d)};
+var mon=function(s){return addD(s,-((dt(s).getDay()+6)%7))};
+var fmtD=function(s){return dt(s).toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"})};
+var today=iso(new Date());
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+function pace(km,min){if(!(km>0&&min>0))return"–";var s=Math.round(min/km*60);return Math.floor(s/60)+"’"+String(s%60).padStart(2,"0")+"/km"}
+function hm(m){m=Math.round(m);return m>=60?Math.floor(m/60)+" h "+String(m%60).padStart(2,"0"):m+" min"}
+var TY={easy:["Footing","#0A8F67"],quality:["Qualité","#E5484D"],recup:["Récup","#2E9BD6"],long:["Sortie longue","#7B4DFF"],renfo:["Renfo","#E58A00"],race:["Course","#E5484D"]};
+var V={tab:"plan",draft:null,del:null};
+
+function gen(p){
+ var W=p.raceDate&&p.W?p.W:{poids:12,forme:8,"5k":8,"10k":10,semi:12}[p.goal],deb=p.level=="deb";
+ var peak={poids:[50,70],forme:[35,45],"5k":[40,50],"10k":[60,70],semi:[95,105]}[p.goal][deb?0:1],st=deb?20:35;
+ var cfg=dayCfg(p),types=cfg?cfg.types:p.goal=="poids"&&p.n>2?["easy","recup","long"]:p.n==2?["easy","long"]:p.n==3?["easy","quality","long"]:["easy","quality","recup","long"];
+ var offs=cfg?cfg.offs:p.goal=="poids"&&p.n>2?[1,3,6]:p.n==2?[2,6]:p.n==3?[1,3,6]:[1,3,5,6];
+ var out=[],r5=function(x){return Math.max(15,Math.round(x/5)*5)};
+ for(var w=1;w<=W;w++){
+  var L=st+(peak-st)*(w-1)/Math.max(1,W-2);
+  if(w==W)L=peak*0.7;else if(p.raceDate&&w==W-1&&W>=6)L*=0.85;else if(w%4==0)L*=0.8;
+  L=r5(L);var E=r5(L*0.6),early=deb&&w<=Math.ceil(W/2);
+  var rs=[1,2,3,5,8,10,12,15][Math.min(w-1,7)],wk=rs<=2?2:1;
+  var rw=function(t){return Math.max(3,Math.round(t/(rs+wk)))+" × ("+rs+" min course + "+wk+" min marche)"};
+  types.forEach(function(ty,i){
+   var d,m;
+   if(ty=="easy"){m=E;d=early?"Course/marche : "+rw(E):"Footing "+E+" min, allure facile (tu peux parler)"}
+   else if(ty=="long"){m=L;d=early?"Course/marche : "+rw(L):"Sortie longue "+L+" min, allure très confortable"}
+   else if(ty=="recup"){m=early?30:25;d=early?"Marche active 30 min, allure soutenue":"Footing 25 min très lent, jambes légères"}
+   else{
+    if(early){m=30;d="Footing 25 min + 4 accélérations de 20 s, récup en marchant"}
+    else{var dur=p.goal=="semi"?4:p.goal=="10k"?3:2,reps=Math.min(4+Math.floor(w/2),p.goal=="semi"?6:10);
+     m=15+10+reps*(dur+(dur>2?2:1));d="15 min échauffement + "+reps+" × "+dur+" min soutenu / "+(dur>2?2:1)+" min trot + 10 min calme"}}
+   out.push({id:"s"+w+"_"+i,w:w,date:addD(p.start,(w-1)*7+offs[i]),ty:ty,d:d,min:m,lid:null});
+  });
+ }
+ if(p.goal=="poids"||p.renfo){for(var w=1;w<=W;w++)[["core","Gainage & ventre"],["legs","Jambes & fessiers"]].forEach(function(r,k){var rk=(cfg?cfg.rd:[0,4])[k];if(rk==null)return;out.push({id:"r"+w+"_"+k,w:w,date:addD(p.start,(w-1)*7+rk),ty:"renfo",rid:r[0],d:"Circuit « "+r[1]+" » · 2 tours, ~15 min",min:15,lid:null})})}
+ if(p.raceDate){out=out.filter(function(s){return s.w<W||s.date<=addD(p.raceDate,-2)});out.forEach(function(s){if(s.w==W){if(s.ty=="quality"){s.d="Footing 20 min + 4 accélérations de 20 s (affûtage)";s.min=25}else if(s.ty=="long"){s.ty="easy";s.d="Footing 25 min facile, jambes légères";s.min=25}}});out.push({id:"race",w:W,date:p.raceDate,ty:"race",dist:p.raceDist,d:"Jour de course : "+{"5k":"5 km","10k":"10 km",semi:"semi-marathon"}[p.goal]+". Pars prudemment, finis fort.",min:Math.round(p.raceDist*6),lid:null})}
+ out=out.filter(function(s){return!p.from||s.date>=p.from});out.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0});return out;
+}
+function nextMon(){var d=new Date(),k=(8-d.getDay())%7;if(d.getDay()==1)k=0;d.setDate(d.getDate()+k);return iso(d)}
+
+function vPlan(){
+ if(!S.p)return'<h1 class="brand">Foulée</h1><p class="m" style="margin:0 0 16px">Ton plan, tes allures, ta progression.</p><div class="c"><h2 style="margin-top:0">Crée ton plan</h2><p class="m">4 questions et ton plan est prêt. Ensuite, un test de 12 min te donnera tes allures cibles.</p>'+
+ '<label>1 · Ton objectif</label><select id="g"><option value="poids">Perdre du poids (course + renfo)</option><option value="forme">Courir 30–40 min sans m’arrêter</option><option value="5k">Courir un 5 km</option><option value="10k">Courir un 10 km</option><option value="semi">Courir un semi-marathon</option></select>'+
+ '<label>2 · Ton niveau</label><select id="lv"><option value="deb">Débutant (je démarre ou reprends)</option><option value="inter">Je cours déjà 30 min sans pause</option></select>'+
+ '<label>3 · Tes jours de course (2 à 5)</label><div id="dy" style="display:flex;gap:8px;flex-wrap:wrap">'+DN.map(function(n,i){return'<label class="dchip"><input type="checkbox" value="'+i+'" style="width:auto"'+([1,3,6].indexOf(i)>=0?" checked":"")+'>'+n+'</label>'}).join("")+'</div><label>Jour de ta sortie longue (la plus longue de la semaine)</label><select id="ld">'+DN.map(function(n,i){return'<option value="'+i+'"'+(i==6?" selected":"")+'>'+n+'</option>'}).join("")+'</select><div id="dye" class="m" style="color:var(--err)"></div>'+
+ '<label style="display:flex;gap:8px;align-items:center;color:var(--tx)"><input type="checkbox" id="rf" style="width:auto" checked> Ajouter 2 séances de renfo par semaine</label>'+'<label>4 · Début du plan</label><input type="date" id="sd" value="'+nextMon()+'">'+'<label>5 · Ta course (facultatif)</label><input type="date" id="rdte"><div class="m" style="margin-top:6px">Pour un 5 km, un 10 km ou un semi : le plan est calculé à rebours jusqu’à ce jour, avec une semaine d’affûtage.</div>'+
+ '<button class="full" data-a="gen">Générer mon plan</button></div>';
+ var W=S.p.W,k=Math.floor((dt(today)-dt(S.p.start))/864e5/7)+1,cw=Math.min(W,Math.max(1,k));
+ var dn=S.plan.filter(function(s){return s.lid}).length,tot=S.plan.length;
+ var nx=S.plan.filter(function(s){return !s.lid&&s.date>=today})[0],h='<h1>Mon plan</h1>'+adaptCard()+(nx?'<div class="c hero">'+TRACK+'<div class="when">'+(nx.date==today?"Aujourd’hui":nx.date==addD(today,1)?"Demain":"Prochaine séance")+'</div><div class="hl">'+TY[nx.ty][0]+'</div><div class="hd">'+fmtD(nx.date)+'</div><div class="m hx">'+nx.d+'</div>'+(tgtTxt(nx)?'<div class="chip">'+tgtTxt(nx)+'</div>':'')+'<button class="full" data-a="'+(nx.ty=="renfo"?"rgo":"go")+'" data-id="'+(nx.ty=="renfo"?nx.rid:nx.id)+'" data-sid="'+nx.id+'">'+(nx.ty=="renfo"?"Ouvrir le circuit":"▶ Lancer")+'</button></div>':'')+'<div class="c"><b>Semaine '+cw+' / '+W+'</b>'+raceLine()+'<div class="bar"><i style="width:'+Math.round(dn/tot*100)+'%"></i></div><div class="m">'+dn+' séances faites sur '+tot+' · '+{poids:"perte de poids",forme:"30–40 min en continu","5k":"5 km","10k":"10 km",semi:"semi-marathon"}[S.p.goal]+'</div>'+(S.p.goal=="poids"?'<p class="m">Pour perdre du poids, la régularité et l’alimentation comptent plus que l’intensité. Le ventre ne se cible pas : le renfo aide surtout à garder du muscle et à mieux courir.</p>':'')+'<button class="g" style="margin:10px 8px 0 0" data-a="pain">J’ai une douleur</button><button class="g" style="margin-top:10px" data-a="reset">Nouveau plan</button></div>'+vAllures();
+ for(var w=1;w<=W;w++){
+  var ss=S.plan.filter(function(s){return s.w==w}),d=ss.filter(function(s){return s.lid}).length,pm=ss.reduce(function(a,s){return a+s.min},0);
+  h+='<details'+(w==cw?" open":"")+'><summary>Semaine '+w+(w%4==0&&w<W?" (allégée)":w==W?(S.p.raceDate?" (semaine de course)":" (affûtage)"):"")+' <span>· '+hm(pm)+' · '+d+'/'+ss.length+'</span></summary>';
+  ss.forEach(function(s){
+   var lg=s.lid&&S.logs.filter(function(l){return l.id==s.lid})[0];
+   h+='<div class="s'+(s.date==today?" today":"")+(!s.lid&&s.date<today?" miss":"")+'"><div class="sb"><b>'+(s.date==today?"Aujourd’hui":fmtD(s.date))+'</b>'+(!s.lid&&s.date<today?' <span class="tag">manquée</span>':'')+(s.al&&!s.lid?' <span class="tag">allégée</span>':'')+' <span class="tag" style="color:'+TY[s.ty][1]+'">'+TY[s.ty][0]+'</span><div class="m">'+s.d+'</div>'+(tgtTxt(s)?'<div class="m" style="color:var(--ok)">'+tgtTxt(s)+'</div>':'')+'</div>'+
+   (s.ty=="renfo"?(s.lid?'<span class="ok">✓ fait</span>':'<button data-a="rgo" data-id="'+s.rid+'" data-sid="'+s.id+'">Ouvrir</button>'):lg?'<span class="ok">✓ '+lg.km+' km</span>':'<span style="display:flex;gap:6px"><button data-a="go" data-id="'+s.id+'">▶</button><button class="g" data-a="rec" data-id="'+s.id+'">Noter</button></span>')+'</div>';
+  });
+  h+='</details>';
+ }
+ return h;
+}
+function vLog(){
+ var d=V.draft||{};
+ return'<h1>Enregistrer une séance</h1><div class="c">'+(d.pid?'<div class="m">Liée à une séance du plan ✓</div>':'')+
+ '<label>Date</label><input type="date" id="dt" value="'+(d.date||today)+'">'+
+ '<div class="grid"><div><label>Distance (km)</label><input type="number" id="km" step="0.01" min="0" inputmode="decimal"></div><div><label>Durée (min ou mm:ss)</label><input type="text" id="mn" inputmode="text" placeholder="ex : 42 ou 42:30" value="'+(d.mn||"")+'"></div></div>'+
+ '<div id="pv" class="m" style="margin-top:6px"></div><label>Ressenti</label><select id="rpe"><option value="1">😄 Très facile</option><option value="2">🙂 Facile</option><option value="3" selected>😐 Correct</option><option value="4">😮‍💨 Dur</option><option value="5">🥵 Très dur</option></select>'+
+ '<label>Notes</label><textarea id="nt" rows="2" placeholder="Météo, sensations, parcours…"></textarea>'+
+ '<div id="err" class="m" style="color:var(--err);min-height:20px"></div><button class="full" data-a="save">Enregistrer</button></div>';
+}
+function bars(){
+ var m0=mon(today),v=[],mx=1;
+ for(var i=7;i>=0;i--){var a=addD(m0,-7*i),b=addD(a,6);var s=S.logs.filter(function(l){return l.date>=a&&l.date<=b}).reduce(function(x,l){return x+l.km},0);v.push([a,s]);mx=Math.max(mx,s)}
+ var o='<svg viewBox="0 0 320 130" role="img" aria-label="Kilomètres par semaine">';
+ v.forEach(function(x,i){var h=Math.round(x[1]/mx*80),X=6+i*39;
+  o+='<rect x="'+X+'" y="'+(100-h)+'" width="30" height="'+h+'" rx="4" fill="var(--ac)"/><text x="'+(X+15)+'" y="'+(94-h)+'" font-size="10" text-anchor="middle" fill="var(--tx)">'+(x[1]?Math.round(x[1]*10)/10:"")+'</text><text x="'+(X+15)+'" y="118" font-size="9" text-anchor="middle" fill="var(--mut)">'+dt(x[0]).getDate()+"/"+(dt(x[0]).getMonth()+1)+'</text>'});
+ return o+'</svg>';
+}
+function line(){
+ var L=S.logs.slice().sort(function(a,b){return a.date<b.date?-1:1}).slice(-12);
+ if(L.length<2)return'<p class="m">Ajoute au moins 2 séances pour voir ta progression d’allure.</p>';
+ var p=L.map(function(l){return l.min/l.km*60}),lo=Math.min.apply(0,p),hi=Math.max.apply(0,p),r=(hi-lo)||1;
+ var pts=p.map(function(x,i){return(10+i*300/(p.length-1)).toFixed(1)+","+(15+(x-lo)/r*80).toFixed(1)});
+ return'<svg viewBox="0 0 320 120" role="img" aria-label="Évolution de l’allure"><polyline points="'+pts.join(" ")+'" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linejoin="round"/>'+pts.map(function(q){var c=q.split(",");return'<circle cx="'+c[0]+'" cy="'+c[1]+'" r="3.5" fill="var(--ok)"/>'}).join("")+
+ '<text x="10" y="112" font-size="10" fill="var(--mut)">↑ plus rapide : '+pace(1,lo/60)+' · plus lent : '+pace(1,hi/60)+'</text></svg>';
+}
+function vStats(){
+ var L=S.logs;if(!L.length)return'<h1>Stats</h1><div class="c m">Aucune séance enregistrée pour l’instant. Ajoute ta première séance dans l’onglet « Séance ».</div>';
+ var km=L.reduce(function(a,l){return a+l.km},0),mn=L.reduce(function(a,l){return a+l.min},0);
+ var m0=mon(today),wk=L.filter(function(l){return l.date>=m0}).reduce(function(a,l){return a+l.km},0);
+ var long=L.reduce(function(a,l){return l.km>a.km?l:a},L[0]);
+ var el=L.filter(function(l){return l.km>=3}),bp=el.length?el.reduce(function(a,l){return l.min/l.km<a.min/a.km?l:a},el[0]):null;
+ var e5=el.length?Math.min.apply(0,el.map(function(l){return l.min*Math.pow(5/l.km,1.06)})):null;
+ var f5=e5?Math.floor(e5)+":"+String(Math.round((e5%1)*60)%60).padStart(2,"0"):"–";
+ var h='<h1>Mes performances</h1><div class="grid"><div class="c"><div class="m">Total</div><div class="k">'+(Math.round(km*10)/10)+' km</div></div><div class="c"><div class="m">Séances</div><div class="k">'+L.length+'</div></div><div class="c"><div class="m">Cette semaine</div><div class="k">'+(Math.round(wk*10)/10)+' km</div></div><div class="c"><div class="m">Allure moyenne</div><div class="k">'+pace(km,mn)+'</div></div></div>'+
+ '<h2>Km par semaine</h2><div class="c">'+bars()+'</div><h2>Évolution de l’allure</h2><div class="c">'+line()+'</div>'+
+ '<h2>Records</h2><div class="c"><div class="row" style="border:0"><span>Sortie la plus longue</span><b>'+long.km+' km</b></div><div class="row"><span>Meilleure allure (≥ 3 km)</span><b>'+(bp?pace(bp.km,bp.min):"–")+'</b></div><div class="row"><span>Estimation 5 km</span><b>'+f5+'</b></div></div>'+
+ '<h2>Historique</h2><div class="c" style="padding-top:4px">';
+ L.slice().sort(function(a,b){return a.date<b.date?1:-1}).forEach(function(l,i){
+  h+='<div class="row"'+(i==0?' style="border:0"':'')+'><div style="flex:1"><b>'+fmtD(l.date)+'</b> · '+l.km+' km · '+hm(l.min)+' · '+pace(l.km,l.min)+(l.notes?'<div class="m">'+esc(l.notes)+'</div>':'')+rowExtra(l)+'</div><button class="g" data-a="del" data-id="'+l.id+'">'+(V.del==l.id?"Sûr ?":"✕")+'</button></div>'});
+ return h+'</div>';
+}
+var T={st:"idle",pid:null,dist:0,acc:0,t0:0,last:null,win:[],wid:null,tk:null,wl:null,err:"",gps:null,n:0,rec:0};
+try{var q=JSON.parse(localStorage.getItem("fouleeRun")||"null");if(q&&q.st){T.st="pause";T.pid=q.pid;T.iv=buildIv(q.pid);T.ivi=-1;T.dist=q.dist;T.acc=q.acc;T.pts=q.pts||[];T.sp=q.sp||[];T.spT=q.spT||0;T.rec=1}}catch(e){}
+function hav(a,b){var r=Math.PI/180,x=(b.lo-a.lo)*r*Math.cos((a.la+b.la)/2*r),y=(b.la-a.la)*r;return Math.sqrt(x*x+y*y)*6371000}
+function el(){return T.acc+(T.st=="run"?Date.now()-T.t0:0)}
+function fmtT(ms){var s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);s%=60;return(h?h+":"+String(m).padStart(2,"0"):m)+":"+String(s).padStart(2,"0")}
+function onPos(p){var c=p.coords;T.gps=Math.round(c.accuracy);T.err="";if(T.st!="run"||c.accuracy>30)return;
+ var pt={la:c.latitude,lo:c.longitude,t:p.timestamp};
+ if(T.last){var d=hav(T.last,pt),s=(pt.t-T.last.t)/1000;if(d<Math.max(4,c.accuracy/2))return;if(s>0&&d/s>12){T.last=pt;return}T.dist+=d;T.win.push([pt.t,T.dist]);kmCheck()}
+ else T.win=[[pt.t,T.dist]];
+ T.last=pt;T.pts=T.pts||[];T.pts.push([pt.la,pt.lo]);if(T.pts.length>800)T.pts=T.pts.filter(function(_,i){return i%2==0})}
+function spd(){var n=Date.now(),w=T.win.filter(function(x){return n-x[0]<15000});if(w.length<2)return 0;var a=w[0],b=w[w.length-1];return b[0]>a[0]?(b[1]-a[1])/((b[0]-a[0])/1000):0}
+function updRun(){var e=$("#rt");if(!e)return;var ms=el(),km=T.dist/1000,sp=T.st=="run"?spd():0;
+ e.textContent=fmtT(ms);$("#rd").textContent=km.toFixed(2);
+ $("#rp").textContent=sp>0.5?pace(1,1000/sp/60):"–";$("#rs").textContent=sp>0.5?(sp*3.6).toFixed(1):"–";
+ $("#ra").textContent=km>0.05?pace(km,ms/60000):"–";
+ $("#rg").textContent=T.st!="run"?"":T.err||(T.gps==null?"Recherche du signal GPS…":"GPS ±"+T.gps+" m"+(T.gps>30?" (signal faible)":""));var mp=$("#mp");if(mp)mp.innerHTML=mapIn();var rk=$("#rk");if(rk){var lk=(T.sp&&T.sp.length)?"Dernier km : "+fmtS(T.sp[T.sp.length-1])+" · "+T.sp.length+" km bouclés":"",sx=T.st=="run"?spd():0,tg=T.pid&&tgtOf(T.pid),hint="";if(tg&&!tg.q&&sx>0.5){var cp=1000/sx;hint=cp<tg.lo*.97?"allure trop rapide, ralentis":cp>tg.hi*1.03?"un peu lent, accélère":"allure dans la cible ✓"}rk.textContent=lk+(lk&&hint?" · ":"")+hint}var tl=$("#rtl");if(tl)tl.textContent=fmtT(Math.max(0,720000-el()));ivUI()}
+function snap(){try{localStorage.setItem("fouleeRun",JSON.stringify({st:T.st,pid:T.pid,dist:T.dist,acc:el(),sp:T.sp||[],spT:T.spT||0,pts:(T.pts||[]).slice(-600)}))}catch(e){}}
+function tick(){T.n++;updRun();if(T.iv&&T.st=="run")ivTick();if(T.test&&T.st=="run"){var tm=el();if(tm>=360000&&!T.f6){T.f6=1;say("Six minutes. Moitié du test.")}if(tm>=660000&&!T.f11){T.f11=1;say("Une minute restante.")}if(tm>=717000&&tm<720000)beep(880,0.2);if(tm>=720000){beep(1320,0.6);runAct("stop");return}}if(T.st=="run"&&T.n%5==0)snap()}
+function stopGeo(){if(T.wid!=null){navigator.geolocation.clearWatch(T.wid);T.wid=null}}
+function geo(){stopGeo();if(!navigator.geolocation){T.err="Géolocalisation indisponible sur cet appareil.";return}
+ T.wid=navigator.geolocation.watchPosition(onPos,function(e){T.err=e.code==1?"Localisation refusée ou bloquée. Utilise « Tester le GPS » avant de démarrer, ou l’appli Android. Le chrono et la voix fonctionnent quand même.":"Signal GPS indisponible, essaie en extérieur."},{enableHighAccuracy:true,maximumAge:0,timeout:20000})}
+function wake(on){try{if(on&&navigator.wakeLock){navigator.wakeLock.request("screen").then(function(l){T.wl=l}).catch(function(){})}else if(T.wl){T.wl.release();T.wl=null}}catch(e){}}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState=="visible"&&T.st=="run")wake(true)});
+function begin(){T.st="run";T.rec=0;say(T.dist>0?"On reprend.":"C’est parti."+tgtSay());T.t0=Date.now();T.last=null;T.win=[];T.err="";T.gps=null;geo();wake(true);if(!T.tk)T.tk=setInterval(tick,1000);render()}
+function runAct(a,b){
+ if(a=="go"){V.sel=b.dataset.id;show("run");return 1}
+ if(a=="sel"){V.sel=b.dataset.id;render();return 1}
+ if(a=="gtest"){var fr=false,tg=function(t){var e=$("#gm");if(e)e.textContent=t};try{fr=window.self!==window.top}catch(x){fr=true}
+  if(!navigator.geolocation){tg("Localisation indisponible sur cet appareil ou ce navigateur.");return 1}
+  tg("Demande de localisation en cours…");
+  var tip=fr?" Cette page est affichée dans un cadre (aperçu) qui bloque souvent la localisation : utilise l’appli Android installée, ou héberge la page toi-même (voir le README).":" Vérifie l’autorisation du site dans Chrome (cadenas > Autorisations > Position) et que la localisation du téléphone est activée.";
+  navigator.geolocation.getCurrentPosition(function(p){tg("✓ Localisation OK (précision ±"+Math.round(p.coords.accuracy)+" m). Tu peux démarrer.")},function(e){tg((e.code==1?"Localisation refusée ou bloquée.":e.code==2?"Position introuvable : active la localisation du téléphone et sors à l’extérieur.":"Délai dépassé : sors à l’extérieur et réessaie.")+(e.code==1?tip:""))},{enableHighAccuracy:true,timeout:15000,maximumAge:0});return 1}
+ if(a=="gotest"){V.sel="test";show("run");return 1}
+ if(a=="refman"){var d5=+$("#rd5").value,t5=+$("#rt5").value;if(d5>=1&&t5>=3){S.ref=Math.round(t5*60*Math.pow(5/d5,1.06));save();render();toast("Allures calculées ✓")}return 1}
+ if(a=="voice"){S.voice=S.voice===false;save();if(S.voice!==false)say("Voix activée.");render();return 1}
+ if(a=="vtest"){var ok=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);pickV();beep();VM=ok?"Synthèse vocale détectée · "+(VX?"voix française : "+VX.name:"aucune voix française trouvée (installe-la dans Réglages > Synthèse vocale)")+(S.voice===false?" · voix désactivée":""):"Synthèse vocale indisponible ici : ouvre le lien dans Chrome (⋮ > Ouvrir dans le navigateur).";say("Test de la voix. Si tu m’entends, tout fonctionne.");showVM();return 1}
+ if(a=="start"){T.test=V.sel=="test"?1:0;T.f6=0;T.f11=0;T.pid=V.sel&&V.sel!="free"&&V.sel!="test"?V.sel:null;T.iv=T.test?null:buildIv(T.pid);T.ivi=-1;T.ivd=0;T.dist=0;T.acc=0;T.pts=[];T.sp=[];T.spT=0;begin();return 1}
+ if(a=="resume"){begin();return 1}
+ if(a=="pause"){say("Pause.");T.acc=el();T.st="pause";stopGeo();wake(false);snap();render();return 1}
+ if(a=="stop"){if(b&&!V.cs){V.cs=1;b.textContent="Confirmer la fin ?";setTimeout(function(){V.cs=0;if(b.isConnected)b.textContent="⏹ Terminer"},4000);return 1}V.cs=0;T.acc=el();T.st="done";T.rec=0;say("Séance terminée. Distance : "+(T.dist/1000).toFixed(2).replace(".",",")+" kilomètres. Durée : "+spk(Math.round(T.acc/1000))+(T.dist>50?". Allure moyenne : "+spk(Math.round(T.acc/T.dist))+" par kilomètre.":"."));stopGeo();wake(false);clearInterval(T.tk);T.tk=null;try{localStorage.removeItem("fouleeRun")}catch(e){}render();return 1}
+ if(a=="rdrop"){T.st="idle";T.dist=0;T.acc=0;T.pid=null;V.sel=null;render();return 1}
+ if(a=="rsave"){var km=Math.round(T.dist/10)/100;if(!(km>0)&&$("#rkm"))km=+String($("#rkm").value).replace(",",".")||0;if(!(km>0)){$("#rerr").textContent="Indique la distance parcourue pour enregistrer la séance.";return 1}
+  var l={id:Date.now(),date:today,km:km,min:Math.round(T.acc/6000)/10,rpe:+$("#rrpe").value,notes:T.test?"Test 12 min":"Suivi GPS",test:T.test?1:0,sp:T.sp||[],route:(T.pts||[]).filter(function(_,i,a){return i%Math.ceil(a.length/150)==0}).map(function(p){return[+p[0].toFixed(5),+p[1].toFixed(5)]})};
+  var an=analyse(l,T.pid);T.an=an;S.logs.push(l);if(T.pid)S.plan.forEach(function(s){if(s.id==T.pid)s.lid=l.id});say(an.say);
+  T.st="an";V.sel=null;save();render();toast("Séance enregistrée ✓");return 1}
+ return 0}
+function mapIn(P){
+ P=P||T.pts||[];if(!P.length)return'<text x="160" y="124" font-size="13" text-anchor="middle" fill="var(--mut)">Le tracé apparaît dès le premier point GPS</text>';
+ var la0=P[0][0],lo0=P[0][1],k=Math.cos(la0*Math.PI/180),
+ Q=P.map(function(p){return[(p[1]-lo0)*k*111320,-(p[0]-la0)*110540]}),
+ xs=Q.map(function(q){return q[0]}),ys=Q.map(function(q){return q[1]}),
+ x0=Math.min.apply(0,xs),x1=Math.max.apply(0,xs),y0=Math.min.apply(0,ys),y1=Math.max.apply(0,ys),
+ w=Math.max(x1-x0,120),h=Math.max(y1-y0,120),sc=Math.min(290/w,190/h),
+ ox=160-(x0+x1)/2*sc,oy=110-(y0+y1)/2*sc,
+ pt=function(q){return(q[0]*sc+ox).toFixed(1)+","+(q[1]*sc+oy).toFixed(1)},
+ s=pt(Q[0]).split(","),e=pt(Q[Q.length-1]).split(","),bar=10;
+ [10,20,50,100,200,500,1000,2000,5000,10000].forEach(function(n){if(n*sc<=100)bar=n});
+ return'<polyline points="'+Q.map(pt).join(" ")+'" fill="none" stroke="var(--ac)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="'+s[0]+'" cy="'+s[1]+'" r="6" fill="var(--ok)"/><circle cx="'+e[0]+'" cy="'+e[1]+'" r="8" fill="var(--ac)" stroke="#fff" stroke-width="3"/><line x1="14" y1="224" x2="'+(14+bar*sc)+'" y2="224" stroke="var(--tx)" stroke-width="3"/><text x="14" y="214" font-size="11" fill="var(--tx)">'+(bar>=1000?bar/1000+' km':bar+' m')+'</text><text x="306" y="20" font-size="12" text-anchor="end" fill="var(--mut)">N ↑</text>'}
+var RF={
+ core:{n:"Gainage & ventre",ex:[["Planche",40,"Coudes sous les épaules, corps aligné, ventre serré."],["Crunch lent",40,"Lombaires au sol, expire en montant."],["Planche latérale gauche",30,"Hanches hautes, corps aligné."],["Planche latérale droite",30,"Pareil de l’autre côté."],["Mountain climbers",30,"Genoux vers la poitrine, rythme régulier."],["Dead bug",40,"Dos plaqué au sol, bras et jambe opposés."],["Pont fessier",40,"Pousse dans les talons, serre les fessiers."]]},
+ legs:{n:"Jambes & fessiers",ex:[["Squats",40,"Dos droit, genoux dans l’axe des pieds."],["Fentes alternées",40,"Genou avant au-dessus de la cheville."],["Pont fessier jambe gauche",30,"Bassin stable, monte les hanches."],["Pont fessier jambe droite",30,"Pareil de l’autre côté."],["Chaise murale",40,"Dos au mur, cuisses à l’horizontale."],["Montées de genoux",30,"Sur place, rythme soutenu."],["Mollets",40,"Monte sur la pointe des pieds, descends lentement."]]},
+ full:{n:"Corps complet",ex:[["Pompes (sur les genoux si besoin)",40,"Corps gainé, coudes à 45°."],["Squats",40,"Dos droit, talons au sol."],["Planche",40,"Corps aligné, ventre serré."],["Fentes alternées",40,"Buste droit."],["Superman",40,"Sur le ventre, lève bras et jambes."],["Gainage dynamique",30,"Alterne planche haute et basse."]]}};
+var C={st:"idle",rid:"core",i:0,r:1,ph:"work",left:0,tk:null,sid:null};
+function rfSay(){try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}var r=RF[C.rid],ex=r.ex[C.i];
+ if(C.ph=="work"){say((C.i==0?(C.r==1?"C’est parti, premier tour. ":"Deuxième tour. "):"")+"Exercice "+(C.i+1)+" sur "+r.ex.length+" : "+ex[0]+", "+ex[1]+" secondes."+(C.r==1?" "+ex[2]:""))}
+ else{var nx=r.ex[C.i+1]||(C.r<2?r.ex[0]:null);say("Repos, 20 secondes."+(nx?" Prochain exercice : "+nx[0]+", "+nx[1]+" secondes.":""))}}
+function rfRecord(){S.renfo=S.renfo||[];S.renfo.push({date:today,rid:C.rid});if(C.sid)S.plan.forEach(function(s){if(s.id==C.sid)s.lid="r"+Date.now()});C.sid=null;save();toast("Renfo enregistré ✓")}
+function rfFinish(){say("Circuit terminé, bien joué.");clearInterval(C.tk);C.tk=null;wake(false);C.st="done";try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}rfRecord();render()}
+function rfStep(){var n=Math.ceil((C.end-Date.now())/1000);if(n>=C.left)return;C.left=n;
+ if(C.left<=0){beep(1320,0.5);var ex=RF[C.rid].ex;
+  if(C.ph=="work"){if(C.i==ex.length-1&&C.r==2){rfFinish();return}C.ph="rest";C.left=20}
+  else{C.ph="work";C.i++;if(C.i>=ex.length){C.i=0;C.r++}C.left=ex[C.i][1]}
+  C.end=Date.now()+C.left*1000;try{navigator.vibrate&&navigator.vibrate(200)}catch(e){}rfSay();render();return}
+ var e=$("#rfl");if(e)e.textContent=C.left;if(C.left==10)say("Dix secondes.");if(C.left>=1&&C.left<=3)beep(880,0.2)}
+function rfAct(a,b){
+ if(a=="rgo"){C.rid=b.dataset.id;C.sid=b.dataset.sid;C.st="idle";show("renfo");return 1}
+ if(a=="rsel"){C.rid=b.dataset.id;C.sid=null;render();return 1}
+ if(a=="rstart"){C.st="run";C.i=0;C.r=1;C.ph="work";C.left=RF[C.rid].ex[0][1];C.end=Date.now()+C.left*1000;wake(true);rfSay();clearInterval(C.tk);C.tk=setInterval(rfStep,250);render();return 1}
+ if(a=="rskip"){C.end=Date.now();rfStep();return 1}
+ if(a=="rstop"){try{speechSynthesis.cancel()}catch(e){}clearInterval(C.tk);C.tk=null;wake(false);C.st="idle";render();return 1}
+ if(a=="rmark"){rfRecord();C.st="done";render();return 1}
+ if(a=="rback"){C.st="idle";render();return 1}
+ return 0}
+var PL=[["h",93,38],["l",[84,43,14,60]],["l",[84,43,84,60,100,60]]],HP=[["h",95,30],["l",[86,36,14,60]],["l",[86,36,86,60]]],
+BA=[["h",14,54],["l",[20,57,54,57]],["l",[54,57,76,40,84,58]]],STEP=["p",[26,52,74,52,74,62,26,62,26,52]],
+PS={plank:[PL],dyn:[PL,HP],
+ crunch:[[["h",16,54],["l",[22,57,58,57]],["l",[58,57,78,38,92,57]],["l",[27,57,21,47]]],[["h",34,38],["l",[38,44,58,57]],["l",[58,57,78,38,92,57]],["l",[41,44,33,35]]]],
+ side:[[["h",88,36],["l",[80,42,14,60]],["l",[80,42,80,60,98,60]],["l",[82,40,82,14]]]],
+ mount:[[["h",95,30],["l",[86,36,48,46]],["l",[48,46,14,60]],["l",[48,46,70,50,62,60]],["l",[86,36,86,60]]]],
+ deadbug:[[["h",14,54],["l",[20,57,56,57]],["l",[56,57,56,36,76,36]],["l",[26,57,26,32]]],[["h",14,54],["l",[20,57,56,57]],["l",[56,57,56,36,76,36]],["l",[26,57,26,32]],["l",[26,57,6,50]],["l",[56,57,98,50]]]],
+ bridge:[BA,[["h",14,54],["l",[22,57,54,38]],["l",[54,38,78,42,84,58]]]],
+ bridge1:[BA,[["h",14,54],["l",[22,57,54,38]],["l",[54,38,78,42,84,58]],["l",[54,38,92,26]]]],
+ squat:[[["h",50,10],["l",[50,18,50,40]],["l",[50,40,50,60,60,60]],["l",[50,22,66,22]]],[["h",56,20],["l",[50,28,38,46]],["l",[38,46,64,48,60,60,70,60]],["l",[50,30,72,30]]]],
+ lunge:[[["h",50,10],["l",[50,18,50,40]],["l",[50,40,50,60,58,60]]],[["h",50,12],["l",[50,20,50,42]],["l",[50,42,72,46,72,60,80,60]],["l",[50,42,38,58,24,56]]]],
+ wall:[[["p",[90,6,90,62]],["h",84,14],["l",[84,22,84,44]],["l",[84,44,54,44,54,60,64,60]],["l",[84,26,72,34]]]],
+ knees:[[["h",50,10],["l",[50,18,50,40]],["l",[50,40,50,60,58,60]],["l",[50,40,68,38,66,52]],["l",[50,22,60,30,68,24]]]],
+ calf:[[STEP,["h",50,8],["l",[50,16,50,36]],["l",[50,36,50,50,60,50]]],[STEP,["h",50,2],["l",[50,10,50,30]],["l",[50,30,50,44,60,50]]]],
+ pushup:[HP,[["h",94,50],["l",[85,52,14,60]],["l",[85,52,74,46,86,60]]]],
+ super:[[["h",98,53],["l",[10,57,90,57]],["l",[90,57,108,57]]],[["h",98,50],["l",[12,57,90,55]],["l",[90,55,108,44]],["l",[12,57,2,46]]]]},
+ST={plank:[["Coudes sous les épaules, avant-bras au sol.","Corps aligné de la tête aux talons.","Serre le ventre et les fessiers, respire normalement."],"bassin qui s’affaisse ou qui monte."],
+ crunch:[["Allongé sur le dos, genoux fléchis, mains derrière la tête.","Expire et décolle les épaules, regard vers le plafond.","Redescends lentement."],"tirer sur la nuque."],
+ side:[["Sur un avant-bras, coude sous l’épaule, pieds empilés.","Monte les hanches pour aligner le corps.","Garde le bassin haut jusqu’à la fin."],"hanches qui descendent."],
+ mount:[["Position de pompe, mains sous les épaules.","Amène un genou vers la poitrine, puis alterne vite.","Garde les hanches basses."],"fesses en l’air."],
+ deadbug:[["Sur le dos, bras tendus au plafond, genoux à 90°.","Étends un bras et la jambe opposée sans décoller le dos.","Reviens au centre et change de côté."],"dos qui se cambre."],
+ bridge:[["Sur le dos, genoux fléchis, pieds à plat.","Pousse dans les talons et monte le bassin.","Serre les fessiers en haut, puis redescends."],"cambrer le bas du dos."],
+ bridge1:[["Comme le pont fessier, avec une jambe tendue.","Monte le bassin sans le laisser pivoter.","Change de jambe à l’autre série."],"bassin qui bascule d’un côté."],
+ squat:[["Pieds à la largeur des épaules, pointes légèrement ouvertes.","Assieds-toi vers l’arrière, dos droit.","Remonte en poussant dans les talons."],"genoux qui rentrent vers l’intérieur."],
+ lunge:[["Fais un grand pas en avant.","Descends jusqu’à frôler le sol avec le genou arrière.","Pousse sur la jambe avant pour revenir, puis alterne."],"genou avant qui dépasse la pointe du pied."],
+ wall:[["Dos contre le mur, descends jusqu’à avoir les cuisses horizontales.","Genoux au-dessus des chevilles.","Tiens la position en respirant."],"mains qui s’appuient sur les cuisses."],
+ knees:[["Debout, monte un genou à hauteur de hanche.","Alterne vite, les bras accompagnent le mouvement.","Reste grand, sur l’avant des pieds."],"buste qui se penche en arrière."],
+ calf:[["Debout sur le bord d’une marche, talons dans le vide.","Monte sur la pointe des pieds.","Redescends lentement sous le niveau de la marche."],"mouvement trop rapide."],
+ pushup:[["Mains sous les épaules, corps gainé (genoux au sol si besoin).","Descends en gardant les coudes à 45°.","Pousse pour remonter sans cambrer."],"bassin qui s’affaisse."],
+ super:[["Allongé sur le ventre, bras tendus devant toi.","Lève bras et jambes en même temps.","Tiens 1 ou 2 secondes, puis redescends."],"relever la tête en arrière."],
+ dyn:[["Pars en planche sur les avant-bras.","Monte sur une main, puis sur l’autre, jusqu’à être sur les mains.","Redescends sur les coudes en alternant le côté de départ."],"hanches qui se balancent."]};
+function exKey(n){var f=/droite/.test(n);if(/^Planche latérale/.test(n))return{k:"side",f:f};if(/^Pont fessier jambe/.test(n))return{k:"bridge1",f:f};if(/^Pompes/.test(n))return{k:"pushup",f:0};
+ var m={"Planche":"plank","Crunch lent":"crunch","Mountain climbers":"mount","Dead bug":"deadbug","Pont fessier":"bridge","Squats":"squat","Fentes alternées":"lunge","Chaise murale":"wall","Montées de genoux":"knees","Mollets":"calf","Superman":"super","Gainage dynamique":"dyn"};return m[n]?{k:m[n],f:0}:null}
+function pic(n){var k=exKey(n);if(!k||!PS[k.k])return"";var P=PS[k.k],o='<svg class="pic" viewBox="0 0 '+(P.length>1?236:116)+' 68" role="img" aria-label="Illustration : '+esc(n)+'">';
+ P.forEach(function(F,i){var ox=i*124,X=function(v){return ox+(k.f?110-v:v)};o+='<polyline points="'+(ox+4)+',62 '+(ox+106)+',62" stroke="var(--bd)" stroke-width="3" stroke-linecap="round" fill="none"/>';
+  F.forEach(function(it){if(it[0]=="h"){o+='<circle cx="'+X(it[1])+'" cy="'+it[2]+'" r="5.5" fill="currentColor"/>';return}
+   var s=[],q=it[1];for(var j=0;j<q.length;j+=2)s.push(X(q[j])+","+q[j+1]);var p=it[0]=="p";
+   o+='<polyline points="'+s.join(" ")+'" fill="none" stroke="'+(p?"var(--mut)":"currentColor")+'" stroke-width="'+(p?3:4.5)+'" stroke-linecap="round" stroke-linejoin="round"'+(p?' opacity=".6"':'')+'/>'})});
+ if(P.length>1)o+='<path d="M111 30l7 4-7 4" fill="none" stroke="var(--mut)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+ return o+'</svg>'}
+function exRow(x){var k=exKey(x[0]),d=k&&ST[k.k];return'<details><summary>'+x[0]+'<span>· '+x[1]+' s</span></summary><div class="exb">'+pic(x[0])+(d?'<ol>'+d[0].map(function(s){return'<li>'+s+'</li>'}).join("")+'</ol><div class="m">À éviter : '+d[1]+'</div>':'<div class="m">'+x[2]+'</div>')+'</div></details>'}
+function vRenfo(){
+ var r=RF[C.rid],h;
+ if(C.st=="run"){var ex=r.ex[C.i],nx=r.ex[C.i+1]||(C.r<2?r.ex[0]:null),w=C.ph=="work";
+  return'<h1>'+r.n+'</h1><div class="c" style="text-align:center"><div class="m">Tour '+C.r+'/2 · exercice '+(C.i+1)+'/'+r.ex.length+'</div><div style="font-weight:700;margin-top:8px;color:'+(w?"var(--ac)":"var(--ok)")+'">'+(w?"EFFORT":"REPOS")+'</div><div style="font-size:24px;font-weight:700;margin:6px 0">'+(w?ex[0]:"Prochain : "+(nx?nx[0]:"–"))+'</div><div style="max-width:300px;margin:6px auto">'+pic(w?ex[0]:(nx?nx[0]:""))+'</div><div class="big" id="rfl">'+C.left+'</div><div class="m">'+(w?ex[2]:"Respire, secoue les jambes.")+'</div></div><button class="full" data-a="rskip">Passer ⏭</button><button class="full g" data-a="rstop">Arrêter</button>'+voiceBtn()}
+ if(C.st=="done")return'<h1>Bien joué 💪</h1><div class="c"><b>Séance de renfo enregistrée ✓</b><button class="full" data-a="rback">OK</button></div>';
+ var R=S.renfo||[],wk=R.filter(function(x){return x.date>=mon(today)}).length;
+ h='<h1>Renforcement</h1><div class="c m">Cette semaine : '+wk+' séance'+(wk>1?"s":"")+' · total : '+R.length+'</div><div class="c"><b>Choisis un circuit</b>';
+ Object.keys(RF).forEach(function(k){h+='<button class="g" style="width:100%;text-align:left;margin-top:8px;'+(C.rid==k?"border-color:var(--ac);color:var(--tx)":"")+'" data-a="rsel" data-id="'+k+'"><b>'+RF[k].n+'</b> · '+RF[k].ex.length+' exercices</button>'});
+ h+='</div><div class="c" style="padding-top:4px"><div class="m" style="padding:12px 0 4px">Touche un exercice pour voir comment le faire.</div>';
+ r.ex.forEach(function(x){h+=exRow(x)});
+ return h+'</div>'+voiceBtn()+'<button class="full" data-a="rstart">▶ Lancer le circuit</button><button class="full g" data-a="rmark">Marquer comme fait</button><p class="m">2 tours, effort puis 20 s de repos. Échauffe-toi 5 min avant et arrête-toi en cas de douleur.</p>'}
+var TRACK='<svg class="trk" viewBox="0 0 300 200" aria-hidden="true"><g fill="none" stroke-width="10"><rect x="20" y="20" width="260" height="160" rx="80" stroke="#1F46E0"/><rect x="40" y="40" width="220" height="120" rx="60" stroke="#2F5BFF" opacity=".7"/><rect x="60" y="60" width="180" height="80" rx="40" stroke="#5A82FF" opacity=".45"/></g><circle class="rs" cx="150" cy="20" r="9" fill="#FFC21F"/><circle class="rn" r="9" fill="#FFC21F"><animateMotion dur="18s" repeatCount="indefinite" path="M100,20 H200 A80,80 0 0 1 200,180 H100 A80,80 0 0 1 100,20 Z"/></circle></svg>';
+var DN=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+function dayCfg(p){if(!p.days||p.days.length<2)return null;
+ var ds=p.days.slice().sort(function(a,b){return a-b}),L=ds.indexOf(p.longDay)>=0?p.longDay:ds[ds.length-1],
+ cd=function(d){return Math.min((L-d+7)%7,(d-L+7)%7)},
+ oth=ds.filter(function(d){return d!=L}).sort(function(a,b){return cd(b)-cd(a)}),
+ n=ds.length,q=p.goal!="poids"&&n>=3?1:0,rc=(n>=4||(p.goal=="poids"&&n>=3))?1:0,m={};
+ oth.forEach(function(d,i){m[d]=(i==0&&q)?"quality":(i==oth.length-1&&rc&&oth.length>=2)?"recup":"easy"});m[L]="long";
+ var free=[0,1,2,3,4,5,6].filter(function(d){return ds.indexOf(d)<0}),pref=free.filter(function(d){return(d+1)%7!=L}),pool=pref.length>=2?pref:free,rd=[];
+ if(pool.length){var a0=pool[0];rd.push(a0);if(pool.length>1){var dd=function(x){return Math.min(Math.abs(x-a0),7-Math.abs(x-a0))};rd.push(pool.slice(1).sort(function(a,b){return dd(b)-dd(a)})[0])}}
+ rd.sort(function(a,b){return a-b});
+ return{types:ds.map(function(d){return m[d]}),offs:ds,rd:rd}}
+function toast(t){var e=$("#toast");if(!e)return;e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove("on")},2500)}
+function parseDur(v){v=String(v||"").trim().replace(",",".");if(v.indexOf(":")>=0){var p=v.split(":").map(Number);if(p.some(isNaN))return 0;return p.length==3?p[0]*60+p[1]+p[2]/60:p[0]+p[1]/60}return+v||0}
+function syncLd(){var s=$("#ld");if(!s)return;var ds=[].slice.call(document.querySelectorAll("#dy input:checked")).map(function(x){return+x.value});[].slice.call(s.options).forEach(function(o){o.disabled=ds.indexOf(+o.value)<0});if(ds.length&&ds.indexOf(+s.value)<0)s.value=ds[ds.length-1]}
+function fmtMM(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function tgt(s){if(!S.ref||s.ty=="renfo"||/^Marche/.test(s.d))return null;if(s.ty=="race"){var pr=S.ref*Math.pow(s.dist/5,1.06)/s.dist;return{lo:pr*.985,hi:pr*1.015}}var p=S.ref/5,f={easy:[1.22,1.38],long:[1.25,1.40],recup:[1.35,1.50]}[s.ty],m;
+ if(f)return{lo:p*f[0],hi:p*f[1],w:/^Course\/marche/.test(s.d)};
+ m=/× (\d+) min soutenu/.exec(s.d);if(m){var c={2:.96,3:1,4:1.03}[m[1]]||1;return{lo:p*c*.98,hi:p*c*1.03,q:1}}
+ return{lo:p*1.22,hi:p*1.38}}
+function tgtOf(id){var s=S.plan.filter(function(x){return x.id==id})[0];return s&&tgt(s)}
+function tgtTxt(s){var t=tgt(s);if(!t)return"";var p=S.ref/5,F=function(a,b){return fmtS(Math.round(a))+"–"+fmtS(Math.round(b))+"/km"};return t.q?"🎯 Fractions : "+F(t.lo,t.hi)+" · le reste en footing : "+F(p*1.22,p*1.38):"🎯 "+(t.w?"Phases de course : ":"Allure cible : ")+F(t.lo,t.hi)}
+function tgtSay(){if(T.test)return" Test de douze minutes : cours le plus loin possible, de façon régulière.";var t=T.pid&&tgtOf(T.pid);if(!t)return"";var r=Math.round;return(t.q?" Fractions entre ":" Allure cible : entre ")+spk(r(t.lo))+" et "+spk(r(t.hi))+" par kilomètre."}
+function kmHint(sec){var t=T.pid&&tgtOf(T.pid);if(!t||T.test||t.q||t.w)return"";return sec<t.lo*.97?" Trop rapide, ralentis.":sec>t.hi*1.03?" Un peu lent, accélère.":" Dans la cible."}
+function paceLines(){if(!S.ref)return"";var p=S.ref/5,r=function(a,b){return fmtS(Math.round(p*a))+"–"+fmtS(Math.round(p*b))+"/km"},w=function(n,v){return'<div class="row"><span>'+n+'</span><b>'+v+'</b></div>'};
+ return w("Footing facile",r(1.22,1.38))+w("Sortie longue",r(1.25,1.40))+w("Récup",r(1.35,1.50))+w("Fractions 2 min",r(.94,.99))+w("Fractions 3 min",r(.98,1.03))+w("Fractions 4 min",r(1.01,1.06))}
+function vAllures(){
+ if(!S.ref)return'<div class="c"><b>Mes allures</b><p class="m">Fais le test de 12 min (cours le plus loin possible, effort soutenu mais régulier) ou saisis un chrono récent pour obtenir tes allures cibles.</p><button class="full" data-a="gotest">▶ Faire le test de 12 min</button><div class="grid" style="margin-top:10px"><input type="number" id="rd5" step="0.1" placeholder="Distance (km)" inputmode="decimal"><input type="number" id="rt5" step="0.1" placeholder="Temps (min)" inputmode="decimal"></div><button class="g full" data-a="refman">Calculer avec mon chrono</button></div>';
+ return'<details><summary>🎯 Mes allures <span>· 5 km estimé '+fmtMM(S.ref)+'</span></summary><div class="m">Mises à jour après chaque séance.</div>'+paceLines()+'<div class="m" style="margin:14px 0 2px">Prévisions de course</div>'+prevRows()+'<button class="g" style="margin:10px 0" data-a="gotest">Refaire le test</button></details>'}
+function analyse(l,pid){
+ var s=pid&&S.plan.filter(function(x){return x.id==pid})[0],L=[],p=l.min*60/l.km;
+ L.push("Allure moyenne <b>"+fmtS(Math.round(p))+"/km</b> sur "+l.km+" km en "+hm(l.min)+".");
+ if(s&&s.min)L.push("Durée : "+Math.round(l.min)+" min réalisées pour "+s.min+" prévues.");
+ if(s&&s.ty=="race"&&l.km>=s.dist*0.95){S.ref=Math.round(l.min*60*Math.pow(5/l.km,1.06));L.push("Résultat de course : équivalent 5 km ≈ <b>"+fmtMM(S.ref)+"</b>. Tes allures sont recalculées.");return{L:L,say:"Bravo pour ta course ! Tes allures sont recalculées."}}
+ if(l.test){if(l.km<0.5){L.push("Distance trop courte pour calculer tes allures : refais le test.");return{L:L,say:"Test trop court."}}
+  S.ref=Math.round(l.min*60*Math.pow(5/l.km,1.06));
+  L.push("Test : équivalent 5 km estimé à <b>"+fmtMM(S.ref)+"</b>. Tes allures cibles sont calculées.");
+  return{L:L,say:"Test terminé. Ton équivalent cinq kilomètres est estimé à "+spk(S.ref)+"."}}
+ if(!S.ref){L.push("Fais le test de 12 min pour obtenir des allures cibles.");return{L:L,say:"Séance enregistrée."}}
+ var t=s&&tgt(s);
+ if(!t){L.push("Séance libre ou sans allure cible : pas de comparaison.");return{L:L,say:"Séance enregistrée."}}
+ var pp=p;
+ if(t.q){if(l.sp&&l.sp.length>=3){var f=l.sp.slice().sort(function(a,b){return a-b}).slice(0,Math.max(1,Math.floor(l.sp.length/3)));pp=f.reduce(function(a,b){return a+b},0)/f.length;L.push("Tes km les plus rapides : <b>"+fmtS(Math.round(pp))+"/km</b> (cible fractions "+fmtS(Math.round(t.lo))+"–"+fmtS(Math.round(t.hi))+").")}
+  else{L.push("Pas assez de km bouclés pour juger les fractions : pas d’ajustement.");return{L:L,say:"Séance enregistrée."}}}
+ else L.push("Cible : "+fmtS(Math.round(t.lo))+"–"+fmtS(Math.round(t.hi))+"/km.");
+ var v=pp<t.lo*.97?"f":pp>t.hi*1.03?"s":"c",e={easy:3,long:3,recup:2,quality:4,race:5}[s.ty]||3,d=l.rpe-e,ch=0;
+ L.push(v=="c"?"Tu étais dans la cible ✓":v=="f"?"Tu étais plus rapide que la cible.":"Tu étais plus lent que la cible.");
+ L.push("Ressenti : "+["","très facile","facile","correct","dur","très dur"][l.rpe]+".");
+ if(v!="f"){if(d>=2)ch=.012;else if(d==1)ch=.006}
+ if(v!="s"){if(d<=-2)ch=-.012;else if(d==-1)ch=-.006}
+ if(v=="f"&&d>=1)L.push("Tu es parti trop vite : respecte l’allure pour progresser.");
+ S.ref=Math.round(S.ref*(1+ch));var pc=Math.abs(ch*100).toFixed(1).replace(".",",");
+ L.push(ch<0?"Tu progresses : allures accélérées d’environ "+pc+" %.":ch>0?"Séance exigeante : allures ralenties d’environ "+pc+" %.":"Allures inchangées.");
+ return{L:L,say:"Analyse terminée. "+(v=="c"?"Dans la cible.":v=="f"?"Plus rapide que la cible.":"Plus lent que la cible.")+(ch<0?" Allures accélérées.":ch>0?" Allures ralenties.":" Allures inchangées.")}}
+function vAn(){var a=T.an||{L:[]};return'<h1>Analyse de la séance</h1><div class="c">'+a.L.map(function(x){return'<p style="margin:0 0 8px">'+x+'</p>'}).join("")+'</div>'+(S.ref?'<div class="c" style="padding-bottom:4px"><b>Tes allures pour les prochaines séances</b>'+paceLines()+'</div>':'')+(S.ref?'<div class="c" style="padding-bottom:4px"><b>Prévisions de course</b>'+prevRows()+'</div>':'')+'<button class="full" data-a="rdrop">OK</button>'}
+var IVN={wu:"Échauffement, footing facile",fast:"Soutenu",rec:"Trot de récupération",cd:"Retour au calme",run:"Course",walk:"Marche",acc:"Accélération"};
+function buildIv(pid){var s=pid&&S.plan.filter(function(x){return x.id==pid})[0],m,L=[],i;if(!s)return null;
+ if(m=/(\d+) min échauffement \+ (\d+) × (\d+) min soutenu \/ (\d+) min trot \+ (\d+) min calme/.exec(s.d)){L.push(["wu",m[1]*60]);for(i=0;i<+m[2];i++){L.push(["fast",m[3]*60]);L.push(["rec",m[4]*60])}L.push(["cd",m[5]*60])}
+ else if(m=/Course\/marche : (\d+) × \((\d+) min course \+ (\d+) min marche\)/.exec(s.d)){for(i=0;i<+m[1];i++){L.push(["run",m[2]*60]);L.push(["walk",m[3]*60])}}
+ else if(m=/^Footing (\d+) min \+ (\d+) accélérations de (\d+) s/.exec(s.d)){L.push(["wu",m[1]*60]);for(i=0;i<+m[2];i++){L.push(["acc",+m[3]]);L.push(["walk",60])}L.push(["cd",300])}
+ if(!L.length)return null;var a=0;return{steps:L.map(function(x){var o={t:x[0],sec:+x[1],a:a};a+=+x[1];return o}),total:a}}
+function ivSay(k){var I=T.iv,st=I.steps[k],o=IVN[st.t]+", "+spk(st.sec)+".",c=0,tot=0,t=T.pid&&tgtOf(T.pid),r=Math.round;
+ I.steps.forEach(function(x,i){if(x.t==st.t){tot++;if(i<=k)c++}});
+ if(tot>1&&(st.t=="fast"||st.t=="run"||st.t=="acc"))o+=" Répétition "+c+" sur "+tot+".";
+ if(t&&st.t=="fast"&&c==1&&t.q)o+=" Allure : de "+spk(r(t.lo))+" à "+spk(r(t.hi))+" par kilomètre.";
+ if(S.ref&&c==1&&(st.t=="wu"||st.t=="rec"||st.t=="cd")){var p=S.ref/5;o+=" Allure facile : de "+spk(r(p*1.22))+" à "+spk(r(p*1.38))+" par kilomètre."}
+ return o}
+function ivTick(){var ts=Math.floor(el()/1000),I=T.iv,k=-1,i;for(i=0;i<I.steps.length;i++)if(ts>=I.steps[i].a&&ts<I.steps[i].a+I.steps[i].sec){k=i;break}
+ if(k<0){if(ts>=I.total&&!T.ivd){T.ivd=1;beep(1320,0.5);say("Programme terminé. Tu peux terminer la séance.")}return}
+ var st=I.steps[k],left=st.a+st.sec-ts;
+ if(k!=T.ivi){T.ivi=k;beep(1320,0.5);try{navigator.vibrate&&navigator.vibrate(300)}catch(e){}say(ivSay(k));return}
+ if(left==10&&st.sec>=30)say("Dix secondes.");
+ if(left>=1&&left<=3&&st.sec>=10)beep(880,0.2)}
+function ivUI(){var b=$("#ivn");if(!b||!T.iv)return;var I=T.iv,ts=Math.floor(el()/1000),k=-1,i;for(i=0;i<I.steps.length;i++)if(ts>=I.steps[i].a&&ts<I.steps[i].a+I.steps[i].sec){k=i;break}
+ if(k<0){b.textContent=ts>=I.total?"Programme terminé":"–";$("#ivs").textContent="";return}
+ var st=I.steps[k],nx=I.steps[k+1],nm=function(x){return IVN[x.t].split(",")[0]};
+ b.textContent=nm(st)+" · "+fmtT((st.a+st.sec-ts)*1000);$("#ivs").textContent="Étape "+(k+1)+"/"+I.steps.length+(nx?" · ensuite : "+nm(nx)+" "+fmtT(nx.sec*1000):" · dernière étape")}
+function lighten(s,f,soft){if(s.ty=="renfo"||s.ty=="race"||s.lid)return false;var m;
+ if(soft&&(s.ty=="quality"||/soutenu|accélérations/.test(s.d))){var a=Math.max(15,Math.round(s.min*f/5)*5);s.ty="easy";s.d="Footing "+a+" min, allure très facile";s.min=a;s.al=1;return true}
+ if(m=/(\d+) × (\d+) min soutenu/.exec(s.d)){s.d=s.d.replace(m[0],Math.max(3,Math.round(m[1]*f))+" × "+m[2]+" min soutenu");s.min=Math.max(15,Math.round(s.min*f));s.al=1;return true}
+ if(m=/(\d+) × \((\d+) min course/.exec(s.d)){s.d=s.d.replace(m[1]+" × (",Math.max(3,Math.round(m[1]*f))+" × (");s.min=Math.max(15,Math.round(s.min*f));s.al=1;return true}
+ if(m=/^(Footing|Sortie longue|Marche active) (\d+) min/.exec(s.d)){var b=Math.max(15,Math.round(m[2]*f/5)*5);s.d=s.d.replace(m[0],m[1]+" "+b+" min");s.min=b;s.al=1;return true}
+ return false}
+function lightenWeek(f,soft){var n=0;S.plan.forEach(function(s){if(!s.lid&&s.date>=today&&s.date<addD(today,7)&&lighten(s,f,soft))n++});return n}
+function shiftPlan(){if(S.p.raceDate)return false;S.plan.forEach(function(s){if(!s.lid&&s.date>=today){s.date=addD(s.date,7);s.w+=1}});S.p.W+=1;return true}
+function missedRuns(){return S.plan.filter(function(s){return s.ty!="renfo"&&!s.lid&&s.date<today&&s.date>=addD(today,-7)})}
+function adaptCard(){if(!S.p)return"";var h="";
+ if(S.pain&&S.pain>=addD(today,-7))h+='<div class="c"><b>Semaine allégée</b><p class="m" style="margin:6px 0 0">Si la douleur dure plus de quelques jours ou s’aggrave, consulte un professionnel de santé avant de reprendre.</p></div>';
+ if(S.adDis==today)return h;
+ var ms=missedRuns().length,L=S.logs.filter(function(l){return!l.test&&l.date>=addD(today,-10)}).sort(function(a,b){return a.date<b.date?-1:1}),l2=L.slice(-2),
+ hard=(l2.length==2&&l2[0].rpe>=4&&l2[1].rpe>=4)||L.some(function(l){return l.rpe==5&&l.date>=addD(today,-3)}),
+ idle=S.logs.length>0&&!S.logs.some(function(l){return l.date>=addD(today,-10)})&&S.plan.some(function(s){return s.ty!="renfo"&&!s.lid&&s.date<today&&s.date>=addD(today,-10)}),msg="";
+ if(ms>=2)msg="Tu as manqué "+ms+" séances ces 7 derniers jours.";else if(hard)msg="Tes dernières séances étaient dures : mieux vaut lever un peu le pied.";else if(idle)msg="Cela fait plus de 10 jours sans séance enregistrée.";
+ if(!msg)return h;
+ return h+'<div class="c"><b>Adapter ton plan ?</b><p class="m" style="margin:6px 0 12px">'+msg+'</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button data-a="adl">Alléger la semaine</button>'+(S.p.raceDate?'':'<button class="g" data-a="ads">Décaler d’une semaine</button>')+'<button class="g" data-a="adx">Plus tard</button></div></div>'}
+function raceLine(){if(!S.p||!S.p.raceDate)return"";var d=Math.ceil((dt(S.p.raceDate)-dt(today))/864e5);return'<div class="m" style="margin-top:2px">🏁 '+{"5k":"5 km","10k":"10 km",semi:"Semi-marathon"}[S.p.goal]+' le '+dt(S.p.raceDate).toLocaleDateString("fr-FR",{day:"numeric",month:"long"})+(d>0?' · J-'+d:d==0?' · c’est aujourd’hui !':'')+'</div>'}
+function bkCard(){var a=[];try{a=JSON.parse(localStorage.getItem("fouleeBk")||"[]")}catch(e){}
+ var last=S.lastBk?Math.round((dt(today)-dt(S.lastBk))/864e5):null,
+ h='<p class="m" style="margin-top:0">'+(last==null?"Tu n’as pas encore exporté de sauvegarde.":last==0?"Dernière sauvegarde exportée : aujourd’hui.":"Dernière sauvegarde exportée : il y a "+last+" jour"+(last>1?"s":"")+".")+' Tes données restent sur cet appareil : envoie-les sur Drive de temps en temps.</p><button class="full" style="margin-top:6px" data-a="bshare">Sauvegarder vers Drive / partager</button>';
+ if(a.length){h+='<div class="m" style="margin:16px 0 2px">Points de restauration automatiques (1 par jour) :</div>';a.slice().reverse().forEach(function(x,i){var ix=a.length-1-i;h+='<div class="row"><span>'+fmtD(x.d)+' · '+x.n+' séance'+(x.n>1?"s":"")+'</span><button class="g" style="min-height:40px;padding:8px 14px;font-size:14px" data-a="brest" data-i="'+ix+'">Restaurer</button></div>'})}
+ return h+'<div class="m" style="margin:16px 0 6px">Ou copie / colle le texte de tes données :</div>'}
+function adAct(a,b){
+ if(a=="adx"){S.adDis=today;save();render();return 1}
+ if(a=="adl"){var n=lightenWeek(0.8,false);S.adDis=today;save();render();toast(n?"Semaine allégée ✓":"Rien à alléger cette semaine");return 1}
+ if(a=="ads"){shiftPlan();S.adDis=today;save();render();toast("Plan décalé d’une semaine ✓");return 1}
+ if(a=="pain"){if(!V.pn){V.pn=1;b.textContent="Confirmer : alléger 7 jours ?";setTimeout(function(){V.pn=0;if(b.isConnected)b.textContent="J’ai une douleur"},4000);return 1}V.pn=0;lightenWeek(0.6,true);S.pain=today;S.adDis=today;save();render();toast("Semaine allégée");return 1}
+ if(a=="bshare"){var j=JSON.stringify({p:S.p,plan:S.plan,logs:S.logs,renfo:S.renfo||[],poids:S.poids||[],ref:S.ref||0,refH:S.refH||[]});
+  try{var f=new File([j],"foulee-sauvegarde-"+today+".json",{type:"application/json"});if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:"Sauvegarde Foulée"}).then(function(){S.lastBk=today;save();render();toast("Sauvegarde envoyée ✓")}).catch(function(){});return 1}}catch(e){}
+  var t=$("#bk");if(t){t.value=j;t.select()}try{navigator.clipboard.writeText(j);toast("Données copiées : colle-les dans un fichier ou un mail")}catch(e){toast("Copie le texte affiché")}S.lastBk=today;save();return 1}
+ if(a=="brest"){if(V.br!=b.dataset.i){V.br=b.dataset.i;b.textContent="Confirmer ?";setTimeout(function(){V.br=null;if(b.isConnected)b.textContent="Restaurer"},4000);return 1}
+  try{var A=JSON.parse(localStorage.getItem("fouleeBk")||"[]"),o=JSON.parse(A[+b.dataset.i].j),cv=S.voice;S.p=o.p||null;S.plan=o.plan||[];S.logs=o.logs||[];S.renfo=o.renfo||[];S.poids=o.poids||[];S.ref=o.ref||0;S.refH=o.refH||[];S.voice=cv;V.br=null;save();render();toast("Point de restauration appliqué ✓")}catch(e){toast("Restauration impossible")}return 1}
+ return 0}
+var RACES=[["5 km",5],["10 km",10],["Semi-marathon",21.0975],["Marathon",42.195]];
+function fmtHMS(s){s=Math.round(s);var h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;return h?h+":"+String(m).padStart(2,"0")+":"+String(r).padStart(2,"0"):m+":"+String(r).padStart(2,"0")}
+function prd(D,hi,r){r=r||S.ref;var e=hi?(D>=40?1.12:D>=20?1.08:1.06):1.06;return r*Math.pow(D/5,e)}
+function longestRecent(){var d=addD(today,-56);return S.logs.filter(function(l){return l.date>=d&&!l.test}).reduce(function(a,l){return Math.max(a,l.km)},0)}
+function prevRows(){if(!S.ref)return"";var f=S.refH&&S.refH.length>1?S.refH[0]:null,lg=longestRecent();
+ return RACES.map(function(x,i){var D=x[1],lo=prd(D),hi=D>=20?prd(D,1):lo,lng=D>=20,
+  tm=lng?fmtHMS(lo)+" – "+fmtHMS(hi):fmtHMS(lo),
+  pc="allure "+(lng?fmtS(Math.round(lo/D))+"–"+fmtS(Math.round(hi/D)):fmtS(Math.round(lo/D)))+"/km",
+  dl=f?lo-prd(D,0,f.r):0,dtx=f&&Math.abs(dl)>=1?'<div class="ok" style="font-size:13px;color:'+(dl<0?"var(--ok)":"var(--mut)")+'">'+(dl<0?"−":"+")+fmtHMS(Math.abs(dl))+' depuis le '+fmtD(f.d)+'</div>':"",
+  need=D>30?30:16,note=lng?'<div class="m" style="font-size:13px;margin-top:2px">'+(lg>=need?"✓ Ta plus longue sortie récente ("+(Math.round(lg*10)/10)+" km) suffit.":"Plus longue sortie récente : "+(Math.round(lg*10)/10)+" km. Vise "+need+" km avant de t’y fier.")+'</div>':"";
+  return'<div class="row" style="align-items:flex-start;'+(i?"":"border:0;")+'"><div><b>'+x[0]+'</b><div class="m">'+pc+'</div>'+note+'</div><div style="text-align:right;flex-shrink:0"><b style="font:700 21px/1.1 var(--dp)">'+tm+'</b>'+dtx+'</div></div>'}).join("")}
+function vPrev(){var h='<h2>Prévisions de course</h2>';
+ if(!S.ref)return h+'<div class="c"><p class="m" style="margin:0 0 12px">Fais le test de 12 min ou saisis un chrono récent pour obtenir tes prévisions sur 5 km, 10 km, semi et marathon.</p><button class="full" style="margin-top:0" data-a="gotest">▶ Faire le test de 12 min</button></div>';
+ return h+'<div class="c" style="padding-top:4px">'+prevRows()+'<p class="m" style="margin:10px 0 0">Estimation théorique (formule de Riegel) à partir de ton équivalent 5 km de '+fmtMM(S.ref)+'. Elle suppose que tu es entraîné pour la distance et se met à jour avec tes séances. Pour le semi et le marathon, la fourchette tient compte de la fatigue sur longue distance.</p></div>'}
+function recapX(){var o='',s=T.sp||[];
+ if(s.length){var b=Math.min.apply(0,s);o+='<div class="m" style="margin-top:10px">Meilleur km : '+fmtS(b)+' (km '+(s.indexOf(b)+1)+')</div><div class="m">Temps par km : '+s.map(function(x,i){return(i+1)+" → "+fmtS(x)}).join(" · ")+'</div>'}
+ var p=T.pid&&S.plan.filter(function(x){return x.id==T.pid})[0];
+ if(p)o+='<div class="m" style="margin-top:6px">Séance prévue : '+TY[p.ty][0]+', '+p.min+' min (réalisé : '+Math.round(T.acc/60000)+' min)</div>';
+ return o}
+var VX=null,VM="",AC=null;
+function pickV(){try{VX=speechSynthesis.getVoices().filter(function(v){return/^fr/i.test(v.lang)})[0]||null}catch(e){}}
+try{if(window.speechSynthesis){pickV();speechSynthesis.onvoiceschanged=pickV}}catch(e){}
+function showVM(){var e=$("#vm");if(e)e.textContent=VM}
+function unlockAudio(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state=="suspended")AC.resume()}catch(e){}}
+function beep(f,d){try{unlockAudio();var o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f||880;g.gain.value=0.3;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+(d||0.25))}catch(e){}}
+function say(t){if(S.voice===false)return;
+ try{var sy=window.speechSynthesis;if(!sy||!window.SpeechSynthesisUtterance){beep();return}
+  var u=new SpeechSynthesisUtterance(t);u.lang="fr-FR";if(VX)u.voice=VX;u.onerror=function(e){VM="Erreur de voix : "+(e.error||"inconnue");showVM()};
+  try{sy.resume()}catch(e){}setTimeout(function(){sy.speak(u)},100)}catch(e){beep()}}
+function spk(s){var h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60,o=[];if(h)o.push(h+" heure"+(h>1?"s":""));if(m)o.push(m+" minute"+(m>1?"s":""));if(r||!o.length)o.push(r+" seconde"+(r>1?"s":""));return o.join(" ")}
+function voiceBtn(){return'<div class="grid" style="margin-top:10px"><button class="g" data-a="voice">'+(S.voice===false?"🔇 Voix désactivée":"🔊 Voix activée")+'</button><button class="g" data-a="vtest">Tester la voix</button></div><div class="m" id="vm" style="margin-top:6px"></div>'}
+function fmtS(s){return Math.floor(s/60)+"’"+String(s%60).padStart(2,"0")}
+function kmCheck(){T.sp=T.sp||[];T.spT=T.spT||0;while(T.dist>=(T.sp.length+1)*1000){var e=el();T.sp.push(Math.max(1,Math.round((e-T.spT)/1000)));T.spT=e;var n=T.sp.length;say("Kilomètre "+n+". Temps du kilomètre : "+spk(T.sp[n-1])+". Allure moyenne : "+spk(Math.round(e/T.dist))+" par kilomètre."+kmHint(T.sp[n-1]));try{navigator.vibrate&&navigator.vibrate([150,80,150])}catch(x){}}}
+function rowExtra(l){if(!(l.route&&l.route.length>1))return'';var o=V.rt==l.id;return'<div><button class="g" style="padding:4px 10px;margin-top:6px;font-size:13px" data-a="rt" data-id="'+l.id+'">'+(o?"Masquer le tracé":"🗺️ Tracé")+'</button></div>'+(o?'<svg viewBox="0 0 320 236" style="background:var(--bg);border-radius:10px;margin-top:8px">'+mapIn(l.route)+'</svg>'+(l.sp&&l.sp.length?'<div class="m" style="margin-top:6px">Km : '+l.sp.map(function(x,i){return(i+1)+" → "+fmtS(x)}).join(" · ")+'</div>':''):'')}
+function vPoids(){
+ var P=(S.poids||[]).slice().sort(function(a,b){return a.date<b.date?-1:1}),h='<h2>Poids</h2><div class="c"><div class="grid"><input type="number" id="pk" step="0.1" min="30" max="300" inputmode="decimal" placeholder="Poids (kg)"><button data-a="wsave">Ajouter la pesée</button></div>';
+ if(P.length){var a=P[0],z=P[P.length-1],df=Math.round((z.kg-a.kg)*10)/10;
+  h+='<div class="k" style="margin-top:10px">'+z.kg+' kg</div><div class="m">'+(P.length>1?(df>0?"+":"")+df+' kg depuis le '+fmtD(a.date):"Première pesée")+'</div>';
+  if(P.length>1){var V2=P.slice(-20),lo=Math.min.apply(0,V2.map(function(x){return x.kg})),hi=Math.max.apply(0,V2.map(function(x){return x.kg})),r=(hi-lo)||1,pts=V2.map(function(x,i){return(10+i*300/(V2.length-1)).toFixed(1)+","+(15+(hi-x.kg)/r*70).toFixed(1)});
+   h+='<svg viewBox="0 0 320 110" role="img" aria-label="Évolution du poids" style="margin-top:8px"><polyline points="'+pts.join(" ")+'" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linejoin="round"/><text x="10" y="104" font-size="10" fill="var(--mut)">min '+lo+' kg · max '+hi+' kg</text></svg>'}
+  h+='<button class="g" style="margin-top:8px;font-size:13px" data-a="wdel">Supprimer la dernière pesée</button>'}
+ return h+'</div><h2>Sauvegarde</h2><div class="c">'+bkCard()+'<textarea id="bk" rows="3"></textarea><div class="grid" style="margin-top:8px"><button data-a="bexp">Exporter</button><button class="g" data-a="bimp">Importer</button></div><div id="bm" class="m"></div></div>'}
+function vRun(){
+ var s=T.pid&&S.plan.filter(function(x){return x.id==T.pid})[0],h;
+ if(T.st=="idle"){
+  var up=S.plan.filter(function(x){return !x.lid&&x.ty!="renfo"&&x.date>=addD(today,-3)}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,4);
+  var cur=V.sel||(up[0]&&up[0].id)||"free";V.sel=cur;
+  h='<h1>Course GPS</h1><div class="c"><b>Quelle séance ?</b>';
+  var bt=function(id,inner){return'<button class="g" style="width:100%;text-align:left;margin-top:8px;'+(cur==id?"border-color:var(--ac);color:var(--tx)":"")+'" data-a="sel" data-id="'+id+'">'+inner+'</button>'};
+  up.forEach(function(x){h+=bt(x.id,'<b>'+fmtD(x.date)+'</b> · '+TY[x.ty][0]+'<div class="m">'+x.d+'</div><div class="m">'+tgtTxt(x)+'</div>')});
+  h+=bt("test","<b>Test d’allure (12 min)</b><div class='m'>Cours le plus loin possible en 12 min, effort soutenu mais régulier. Arrêt automatique.</div>")+bt("free","<b>Séance libre</b>")+voiceBtn()+'<button class="g full" style="margin-top:10px" data-a="gtest">Tester le GPS</button><div class="m" id="gm" style="margin-top:6px"></div><button class="full" data-a="start">▶ Démarrer</button><p class="m">Garde l’appli ouverte et l’écran allumé pendant la course : le GPS s’interrompt quand le navigateur passe en arrière-plan.</p></div>';
+  return h}
+ if(T.st=="an")return vAn();
+ h='<h1>'+(T.st=="run"?"En course":T.st=="pause"?"En pause":"Terminé")+'</h1>';
+ if(T.rec)h+='<div class="c m">Séance récupérée : appuie sur Reprendre pour continuer là où tu t’étais arrêté.</div>';
+ if(s)h+='<div class="c m"><b style="color:var(--tx)">'+TY[s.ty][0]+'</b> · '+s.d+(tgtTxt(s)?'<div style="color:var(--ok);margin-top:4px">'+tgtTxt(s)+'</div>':'')+'</div>';
+ if(T.test)h+='<div class="c m"><b style="color:var(--tx)">Test 12 min</b> · cours le plus loin possible, effort soutenu mais régulier. Reste : <span id="rtl"></span></div>';
+ if(T.iv)h+='<div class="c"><div class="m">Étape en cours</div><div class="k" id="ivn">–</div><div class="m" id="ivs"></div></div>';
+ if(T.st=="done")return h+'<div class="c" style="padding:6px"><svg viewBox="0 0 320 236" role="img" aria-label="Tracé GPS" style="background:var(--bg);border-radius:10px">'+mapIn()+'</svg></div><div class="c"><b>Récapitulatif</b><div class="grid" style="margin-top:8px"><div><div class="m">Distance</div><div class="k">'+(T.dist/1000).toFixed(2)+' km</div></div><div><div class="m">Durée</div><div class="k">'+fmtT(T.acc)+'</div></div><div><div class="m">Allure moyenne</div><div class="k">'+pace(T.dist/1000,T.acc/60000)+'</div></div><div><div class="m">Vitesse moyenne</div><div class="k">'+(T.dist>0&&T.acc>0?(T.dist/T.acc*3600).toFixed(1):"–")+' km/h</div></div></div>'+recapX()+(T.dist<50?'<label>Distance parcourue (km) : le GPS n’a rien enregistré</label><input type="text" id="rkm" inputmode="decimal" placeholder="ex : 5,2">':'')+'<label>Ressenti</label><select id="rrpe"><option value="1">😄 Très facile</option><option value="2">🙂 Facile</option><option value="3" selected>😐 Correct</option><option value="4">😮‍💨 Dur</option><option value="5">🥵 Très dur</option></select><div id="rerr" class="m" style="color:var(--err);min-height:20px"></div><button class="full" data-a="rsave">Enregistrer</button><button class="full g" data-a="rdrop">Abandonner</button></div>';
+ return h+'<div class="c board"><div class="m">Temps</div><div class="big" id="rt">0:00</div></div><div class="grid"><div class="c"><div class="m">Distance (km)</div><div class="k" id="rd">0.00</div></div><div class="c"><div class="m">Allure actuelle</div><div class="k" id="rp">–</div></div><div class="c"><div class="m">Vitesse (km/h)</div><div class="k" id="rs">–</div></div><div class="c"><div class="m">Allure moyenne</div><div class="k" id="ra">–</div></div></div><div class="c" style="padding:6px;margin-top:12px"><svg id="mp" viewBox="0 0 320 236" role="img" aria-label="Tracé GPS" style="background:var(--bg);border-radius:10px">'+mapIn()+'</svg></div><div class="m" id="rk" style="margin-top:6px"></div><div class="m" id="rg"></div>'+voiceBtn()+
+  (T.st=="run"?'<button class="full" style="min-height:64px;font-size:20px" data-a="pause">⏸ Pause</button>':'<button class="full" style="min-height:64px;font-size:20px" data-a="resume">▶ Reprendre</button><button class="full g" data-a="stop">⏹ Terminer</button>')}
+function render(){$("#v").innerHTML={plan:vPlan,log:vLog,stats:function(){return vStats()+vPrev()+vPoids()},run:vRun,renfo:vRenfo}[V.tab]();window.scrollTo(0,0);if(V.tab=="run")updRun();syncLd()}
+function show(t){V.tab=t;document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.t==t)});render()}
+document.addEventListener("click",function(e){
+ var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.t)return show(b.dataset.t);
+ var a=b.dataset.a;unlockAudio();if(runAct(a,b)||rfAct(a,b)||adAct(a,b))return;
+ if(a=="gen"){var ds=[].slice.call(document.querySelectorAll("#dy input:checked")).map(function(x){return+x.value}),ld=+$("#ld").value;
+  if(ds.length<2||ds.length>5){$("#dye").textContent="Choisis entre 2 et 5 jours de course.";return}
+  if(ds.indexOf(ld)<0){$("#dye").textContent="Le jour de la sortie longue doit être un de tes jours de course.";return}
+  var sd=$("#sd").value||nextMon(),g=$("#g").value,rd=$("#rdte").value,dist={"5k":5,"10k":10,semi:21.0975}[g],p={goal:g,level:$("#lv").value,n:ds.length,days:ds,longDay:ld,renfo:$("#rf").checked,from:sd,start:mon(sd)};
+  if(rd&&dist){var rw=Math.floor((dt(mon(rd))-dt(p.start))/864e5/7)+1;if(rd<=sd||rw<4){$("#dye").textContent="Choisis une date de course au moins 4 semaines après le début du plan.";toast("Date de course trop proche");return}if(rw>20){$("#dye").textContent="Plan limité à 20 semaines : choisis une date plus proche.";toast("Date de course trop lointaine");return}p.raceDate=rd;p.raceDist=dist;p.W=rw}
+  p.W=p.raceDate?p.W:{poids:12,forme:8,"5k":8,"10k":10,semi:12}[p.goal];S.p=p;S.plan=gen(p);save();render();toast("Plan généré ✓")}
+ else if(a=="reset"){if(!V.rs){V.rs=1;b.textContent="Confirmer ? (tes séances restent enregistrées)";setTimeout(function(){V.rs=0;if(b.isConnected)b.textContent="Nouveau plan"},4000);return}V.rs=0;S.p=null;S.plan=[];save();render();toast("Plan supprimé")}
+ else if(a=="rec"){var s=S.plan.filter(function(x){return x.id==b.dataset.id})[0];V.draft={date:s.date>today?today:s.date,pid:s.id,mn:s.min};show("log")}
+ else if(a=="save"){var km=+String($("#km").value).replace(",","."),mn=parseDur($("#mn").value);
+  if(!(km>0&&mn>0)){$("#err").textContent="Renseigne la distance et la durée.";return}
+  var l={id:Date.now(),date:$("#dt").value||today,km:km,min:mn,rpe:+$("#rpe").value,notes:$("#nt").value.trim()};
+  S.logs.push(l);
+  if(V.draft&&V.draft.pid)S.plan.forEach(function(s){if(s.id==V.draft.pid)s.lid=l.id});
+  V.draft=null;save();show("stats");toast("Séance enregistrée ✓")}
+ else if(a=="rt"){var id2=+b.dataset.id;V.rt=V.rt==id2?null:id2;var y2=window.scrollY;render();window.scrollTo(0,y2)}
+ else if(a=="wsave"){var kg=+$("#pk").value;if(kg>=30&&kg<=300){S.poids=(S.poids||[]).filter(function(x){return x.date!=today});S.poids.push({date:today,kg:Math.round(kg*10)/10});save();toast("Pesée ajoutée ✓");var y3=window.scrollY;render();window.scrollTo(0,y3)}}
+ else if(a=="wdel"){var P2=(S.poids||[]).slice().sort(function(a,b){return a.date<b.date?-1:1});P2.pop();S.poids=P2;save();render()}
+ else if(a=="bexp"){var t=$("#bk");t.value=JSON.stringify({p:S.p,plan:S.plan,logs:S.logs,renfo:S.renfo||[],poids:S.poids||[],ref:S.ref||0,refH:S.refH||[]});t.select();try{navigator.clipboard.writeText(t.value)}catch(e){}$("#bm").textContent="Données copiées (sinon copie le texte à la main)."}
+ else if(a=="bimp"){try{var o=JSON.parse($("#bk").value);if(!o||!Array.isArray(o.logs))throw 0;S.p=o.p||null;S.plan=o.plan||[];S.logs=o.logs;S.renfo=o.renfo||[];S.poids=o.poids||[];S.ref=o.ref||0;S.refH=o.refH||[];save();render();toast("Données importées ✓")}catch(e){$("#bm").textContent="Texte invalide : colle les données exportées."}}
+ else if(a=="del"){var id=+b.dataset.id;
+  if(V.del==id){S.logs=S.logs.filter(function(l){return l.id!=id});S.plan.forEach(function(s){if(s.lid==id)s.lid=null});V.del=null;save()}else V.del=id;
+  var y=window.scrollY;render();window.scrollTo(0,y)}
+});
+document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("#dy"))syncLd()});
+document.addEventListener("input",function(e){if(e.target.id=="km"||e.target.id=="mn"){var k=+String($("#km").value).replace(",","."),m=parseDur($("#mn").value),o=$("#pv");if(o)o.textContent=k>0&&m>0?"Allure : "+pace(k,m)+" · vitesse : "+(k/m*60).toFixed(1)+" km/h":""}});
+if("serviceWorker"in navigator&&location.protocol.indexOf("http")==0)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+show(T.rec?"run":"plan");
+</script></body></html>
